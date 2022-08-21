@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sudoku_app">
+    package="com.em.sudoku_app">
    <application
         android:label="sudoku_app"
         android:name="${applicationName}"
