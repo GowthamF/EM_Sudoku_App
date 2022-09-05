@@ -13,6 +13,7 @@ class _GameControlsState extends State<GameControls> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      spacing: 50,
       children: [
         IconButton(
           onPressed: () {},

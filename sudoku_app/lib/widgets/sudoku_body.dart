@@ -11,12 +11,15 @@ class _SudokuBodyState extends State<SudokuBody> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-      crossAxisCount: 3,
-      children: List.generate(9, (index) {
+      crossAxisCount: 9,
+      physics: const NeverScrollableScrollPhysics(),
+      childAspectRatio: 1,
+      shrinkWrap: true,
+      children: List.generate(81, (index) {
         return Card(
           child: Center(
             child: Text(
-              'Item $index',
+              '$index',
               style: Theme.of(context).textTheme.headline5,
             ),
           ),

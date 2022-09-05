@@ -19,19 +19,20 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           const Expanded(
-            flex: 2,
+            flex: 1,
             child: app.SudokuBodyScreen(),
-          ),
-          const Expanded(
-            flex: 0,
-            child: app.GameControlsScreen(),
           ),
           Expanded(
             flex: 0,
-            child: Container(
-              height: 200,
-              padding: const EdgeInsets.all(10.0),
-              child: const app.GamePadScreen(),
+            child: Column(
+              children: [
+                const app.GameControlsScreen(),
+                Container(
+                  height: 200,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const app.GamePadScreen(),
+                ),
+              ],
             ),
           ),
         ],
