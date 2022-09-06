@@ -7,7 +7,12 @@ class SudokuBody extends StatefulWidget {
   State<SudokuBody> createState() => _SudokuBodyState();
 }
 
-class _SudokuBodyState extends State<SudokuBody> {
+class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
+  // List<int> numbers = [];
+  // var dd = 0;
+
+  Map<int, int> numbers = {};
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -16,13 +21,22 @@ class _SudokuBodyState extends State<SudokuBody> {
       childAspectRatio: 1,
       shrinkWrap: true,
       children: List.generate(81, (index) {
-        return Card(
-          child: Center(
-            child: Text(
-              '$index',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-          ),
+        return DragTarget<int>(
+          builder: ((context, candidateData, rejectedData) {
+            return Card(
+              child: Center(
+                child: Text(
+                  '${numbers[index] ?? ''}',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+            );
+          }),
+          onAccept: (value) {
+            setState(() {
+              numbers[index] = value;
+            });
+          },
         );
       }),
     );
