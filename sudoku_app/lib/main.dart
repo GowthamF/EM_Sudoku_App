@@ -17,6 +17,9 @@ class App extends StatelessWidget {
         RepositoryProvider<UserNameGeneratorRepository>(
           create: (context) => UserNameGeneratorRepository(),
         ),
+        RepositoryProvider<SharedPreferenceRepository>(
+          create: (context) => SharedPreferenceRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -32,6 +35,9 @@ class App extends StatelessWidget {
           BlocProvider<UserNameCubit>(
             create: (context) => UserNameCubit(),
           ),
+          BlocProvider<ThemeCubit>(
+            create: (context) => ThemeCubit(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -41,13 +47,14 @@ class App extends StatelessWidget {
                     RepositoryProvider.of<UserNameGeneratorRepository>(context),
               ),
             ),
+            BlocProvider<ThemeBloc>(
+              create: (context) => ThemeBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
           ],
-          child: MaterialApp(
-            darkTheme: ThemeData.dark(),
-            theme: ThemeData(),
-            themeMode: ThemeMode.light,
-            home: const Home(),
-          ),
+          child: const MainScreen(),
         ),
       ),
     );

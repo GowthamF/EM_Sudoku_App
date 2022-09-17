@@ -12,11 +12,13 @@ class Drawer extends StatefulWidget {
 
 class _DrawerState extends State<Drawer> {
   String? userName;
+  late ThemeBloc _themeBloc;
 
   @override
   void initState() {
     super.initState();
     userName = context.read<UserNameCubit>().state;
+    _themeBloc = BlocProvider.of<ThemeBloc>(context);
   }
 
   @override
@@ -29,33 +31,46 @@ class _DrawerState extends State<Drawer> {
           child: DrawerHeader(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
-            child: ListTile(
-              leading: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black54,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black54,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white70,
+                        backgroundImage: CachedNetworkImageProvider(
+                          'https://robohash.org/$userName!',
+                        ),
+                      ),
+                    ),
+                    title: Text(userName!),
                   ),
-                  shape: BoxShape.circle,
                 ),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white70,
-                  backgroundImage: CachedNetworkImageProvider(
-                    'https://robohash.org/$userName!',
+                Expanded(
+                  child: BlocBuilder<ThemeCubit, bool>(
+                    builder: (context, state) {
+                      return Switch(
+                        value: state,
+                        onChanged: (value) {
+                          context.read<ThemeCubit>().changeTheme(value);
+                          _themeBloc.add(SaveThemeData(isDarkTheme: value));
+                        },
+                        activeThumbImage:
+                            const AssetImage('assets/images/dark_theme.png'),
+                        inactiveThumbImage:
+                            const AssetImage('assets/images/light_theme.png'),
+                      );
+                    },
                   ),
                 ),
-              ),
-              title: Text(userName!),
+              ],
             ),
-          ),
-        ),
-        ListTile(
-          title: Text(
-            'Dark Theme',
-          ),
-          leading: Switch(
-            value: false,
-            activeColor: Color(0xFF6200EE),
-            onChanged: (value) {},
           ),
         ),
         BlocBuilder<LevelsCubit, bool>(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class SudokuBody extends StatefulWidget {
   const SudokuBody({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData appTheme = Theme.of(context);
     return GridView.count(
       crossAxisCount: 9,
       physics: const NeverScrollableScrollPhysics(),
@@ -28,8 +31,11 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                   width: 1,
                 ),
               ),
-              color:
-                  candidateData.isNotEmpty ? Colors.blueAccent : Colors.white,
+              color: candidateData.isNotEmpty
+                  ? Colors.blueAccent
+                  : appTheme.brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.black54,
               child: Center(
                 child: Text(
                   '${numbers[index] ?? ''}',
@@ -39,6 +45,9 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
             );
           }),
           onAccept: (value) {
+            if (numbers.isEmpty) {
+              context.read<TimerStateCubit>().changeTimerState();
+            }
             setState(() {
               numbers[index] = value;
             });
