@@ -22,6 +22,7 @@ class _GamePadState extends State<GamePad> {
             photoProvider: index + 1,
           ),
           child: Card(
+            margin: const EdgeInsets.all(2),
             child: Center(
               child: Text(
                 '${index + 1}',

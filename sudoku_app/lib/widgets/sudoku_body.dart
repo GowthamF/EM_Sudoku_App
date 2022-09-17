@@ -8,9 +8,6 @@ class SudokuBody extends StatefulWidget {
 }
 
 class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
-  // List<int> numbers = [];
-  // var dd = 0;
-
   Map<int, int> numbers = {};
 
   @override
@@ -24,6 +21,15 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
         return DragTarget<int>(
           builder: ((context, candidateData, rejectedData) {
             return Card(
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Colors.grey.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              color:
+                  candidateData.isNotEmpty ? Colors.blueAccent : Colors.white,
               child: Center(
                 child: Text(
                   '${numbers[index] ?? ''}',
