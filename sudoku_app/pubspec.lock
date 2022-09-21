@@ -490,6 +490,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  sudoku_solver_generator:
+    dependency: transitive
+    description:
+      name: sudoku_solver_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0+1"
   synchronized:
     dependency: transitive
     description:

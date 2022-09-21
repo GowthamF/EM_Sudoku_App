@@ -18,7 +18,9 @@ class _GameControlsState extends State<GameControls> {
       spacing: 50,
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<NumbersUndoCubit>().undoCell();
+          },
           icon: const Icon(Icons.undo),
           tooltip: 'Undo',
         ),
