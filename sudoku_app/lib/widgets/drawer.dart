@@ -13,14 +13,12 @@ class Drawer extends StatefulWidget {
 class _DrawerState extends State<Drawer> {
   String? userName;
   late ThemeBloc _themeBloc;
-  late NumbersBloc numbersBloc;
 
   @override
   void initState() {
     super.initState();
     userName = context.read<UserNameCubit>().state;
     _themeBloc = BlocProvider.of<ThemeBloc>(context);
-    numbersBloc = BlocProvider.of<NumbersBloc>(context);
   }
 
   @override
@@ -85,6 +83,7 @@ class _DrawerState extends State<Drawer> {
               children: [
                 ExpansionPanel(
                   isExpanded: state,
+                  canTapOnHeader: true,
                   backgroundColor: Colors.transparent,
                   headerBuilder: (contex, isExpanded) {
                     return const ListTile(
@@ -97,13 +96,16 @@ class _DrawerState extends State<Drawer> {
                       children: List.generate(
                         Levels.values.length,
                         (index) => ListTile(
+                          selected: context.read<LevelsChangeCubit>().state ==
+                              Levels.values[index],
                           title: Text(
                             Levels.values[index].name.getName(),
                           ),
-                          onTap: () {
-                            numbersBloc.add(GenerateNumbers(
-                                selectedLevel: Levels.values[index]));
+                          onTap: () async {
                             Navigator.pop(context);
+                            context
+                                .read<LevelsChangeCubit>()
+                                .changeLevels(Levels.values[index]);
                           },
                         ),
                       ),

@@ -18,26 +18,6 @@ class _HomeState extends State<Home> {
     super.initState();
     _userNameGenerateBloc = BlocProvider.of<UserNameGenerateBloc>(context);
     _userNameGenerateBloc.add(GenerateUserName());
-    // context.read<TimerCubit>().startTimer();
-
-    // WidgetsBinding.instance.scheduleFrameCallback((timeStamp) {
-    //   showDialog(
-    //       context: context,
-    //       builder: (context) {
-    //         return AlertDialog(
-    //           title: const Text('Tips'),
-    //           content: const Text('Drag Numbers in the Pad to Sudoku Card'),
-    //           actions: <Widget>[
-    //             TextButton(
-    //               child: const Text('Ok'),
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //             ),
-    //           ],
-    //         );
-    //       });
-    // });
   }
 
   @override
@@ -72,6 +52,7 @@ class _HomeState extends State<Home> {
               title: const Text('Sudoku'),
             ),
             drawer: const Drawer(child: app.DrawerScreen()),
+            onDrawerChanged: (isOpened) {},
             body: Column(
               children: [
                 Expanded(

@@ -21,9 +21,9 @@ class TimerCubit extends Cubit<Duration> {
 }
 
 class TimerStateCubit extends Cubit<bool> {
-  TimerStateCubit() : super(true);
+  TimerStateCubit() : super(false);
 
-  void changeTimerState() {
-    return emit(!state);
+  void changeTimerState(bool isStart) {
+    return emit(isStart);
   }
 }

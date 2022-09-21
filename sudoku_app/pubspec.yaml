@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.1
   cached_network_image: ^3.2.1
+  collection: ^1.16.0
 
   sudoku_bloc: 
     path: ../sudoku_bloc

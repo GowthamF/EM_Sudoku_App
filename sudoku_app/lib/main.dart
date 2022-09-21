@@ -44,6 +44,9 @@ class App extends StatelessWidget {
           BlocProvider<NumbersUndoCubit>(
             create: (context) => NumbersUndoCubit(),
           ),
+          BlocProvider<LevelsChangeCubit>(
+            create: (context) => LevelsChangeCubit(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -59,8 +62,8 @@ class App extends StatelessWidget {
                     RepositoryProvider.of<SharedPreferenceRepository>(context),
               ),
             ),
-            BlocProvider<NumbersBloc>(
-              create: (context) => NumbersBloc(),
+            BlocProvider<SudokuBloc>(
+              create: (context) => SudokuBloc(),
             ),
           ],
           child: const MainScreen(),

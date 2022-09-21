@@ -25,11 +25,6 @@ class _GameControlsState extends State<GameControls> {
           tooltip: 'Undo',
         ),
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.visibility),
-          tooltip: 'Hint',
-        ),
-        IconButton(
           onPressed: () {
             context.read<TimerCubit>().stopTimer();
           },
@@ -38,7 +33,7 @@ class _GameControlsState extends State<GameControls> {
         ),
         BlocConsumer<TimerStateCubit, bool>(
           listener: (context, state) {
-            if (!state) {
+            if (state) {
               context.read<TimerCubit>().startTimer();
             } else {
               context.read<TimerCubit>().stopTimer();
@@ -46,13 +41,18 @@ class _GameControlsState extends State<GameControls> {
           },
           builder: (context, state) {
             return IconButton(
-              tooltip: state ? 'Play' : 'Pause',
+              tooltip: state ? 'Pause' : 'Play',
               onPressed: () {
-                context.read<TimerStateCubit>().changeTimerState();
+                var timerState = context.read<TimerStateCubit>().state;
+                if (timerState) {
+                  context.read<TimerStateCubit>().changeTimerState(false);
+                } else {
+                  context.read<TimerStateCubit>().changeTimerState(true);
+                }
               },
               icon: state
-                  ? const Icon(Icons.play_arrow)
-                  : const Icon(Icons.pause),
+                  ? const Icon(Icons.pause)
+                  : const Icon(Icons.play_arrow),
             );
           },
         ),
