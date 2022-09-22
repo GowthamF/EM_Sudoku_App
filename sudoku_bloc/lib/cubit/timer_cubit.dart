@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class TimerCubit extends Cubit<Duration> {
   TimerCubit() : super(const Duration());
@@ -18,12 +19,16 @@ class TimerCubit extends Cubit<Duration> {
       timer!.cancel();
     }
   }
+
+  void resetTimer() {
+    return emit(const Duration());
+  }
 }
 
-class TimerStateCubit extends Cubit<bool> {
-  TimerStateCubit() : super(false);
+class TimerStateCubit extends Cubit<TimerStart> {
+  TimerStateCubit() : super(TimerStart.initial);
 
-  void changeTimerState(bool isStart) {
-    return emit(isStart);
+  void changeTimerState(TimerStart timerStart) {
+    return emit(timerStart);
   }
 }

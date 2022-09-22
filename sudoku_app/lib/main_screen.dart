@@ -17,6 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _themeBloc = BlocProvider.of<ThemeBloc>(context);
+
     _themeBloc.add(GetThemeData());
   }
 

@@ -31,9 +31,9 @@ class _GameControlsState extends State<GameControls> {
           icon: const Icon(Icons.clear),
           tooltip: 'Erase',
         ),
-        BlocConsumer<TimerStateCubit, bool>(
+        BlocConsumer<TimerStateCubit, TimerStart>(
           listener: (context, state) {
-            if (state) {
+            if (state == TimerStart.start) {
               context.read<TimerCubit>().startTimer();
             } else {
               context.read<TimerCubit>().stopTimer();
@@ -41,16 +41,20 @@ class _GameControlsState extends State<GameControls> {
           },
           builder: (context, state) {
             return IconButton(
-              tooltip: state ? 'Pause' : 'Play',
+              tooltip: state == TimerStart.pause ? 'Pause' : 'Play',
               onPressed: () {
                 var timerState = context.read<TimerStateCubit>().state;
-                if (timerState) {
-                  context.read<TimerStateCubit>().changeTimerState(false);
+                if (timerState == TimerStart.start) {
+                  context
+                      .read<TimerStateCubit>()
+                      .changeTimerState(TimerStart.pause);
                 } else {
-                  context.read<TimerStateCubit>().changeTimerState(true);
+                  context
+                      .read<TimerStateCubit>()
+                      .changeTimerState(TimerStart.start);
                 }
               },
-              icon: state
+              icon: state == TimerStart.pause
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
             );

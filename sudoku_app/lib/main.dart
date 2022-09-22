@@ -54,6 +54,8 @@ class App extends StatelessWidget {
               create: (context) => UserNameGenerateBloc(
                 userNameGeneratorRepository:
                     RepositoryProvider.of<UserNameGeneratorRepository>(context),
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
               ),
             ),
             BlocProvider<ThemeBloc>(
@@ -63,7 +65,22 @@ class App extends StatelessWidget {
               ),
             ),
             BlocProvider<SudokuBloc>(
-              create: (context) => SudokuBloc(),
+              create: (context) => SudokuBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
+            BlocProvider<InstructionsBloc>(
+              create: (context) => InstructionsBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
+            BlocProvider<LocationBloc>(
+              create: (context) => LocationBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
             ),
           ],
           child: const MainScreen(),

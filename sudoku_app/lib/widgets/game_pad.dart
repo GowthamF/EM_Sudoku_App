@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class GamePad extends StatefulWidget {
   const GamePad({Key? key}) : super(key: key);
@@ -8,30 +10,35 @@ class GamePad extends StatefulWidget {
 }
 
 class _GamePadState extends State<GamePad> {
-  final GlobalKey _draggableKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 5,
-      children: List.generate(10, (index) {
-        return Draggable(
-          data: index + 1,
-          dragAnchorStrategy: pointerDragAnchorStrategy,
-          feedback: DraggingListItem(
-            dragKey: _draggableKey,
-            photoProvider: index + 1,
-          ),
-          child: Card(
-            margin: const EdgeInsets.all(2),
-            child: Center(
-              child: Text(
-                '${index + 1}',
-                style: Theme.of(context).textTheme.headline5,
+    return BlocBuilder<TimerStateCubit, TimerStart>(
+      builder: (context, state) {
+        return GridView.count(
+          crossAxisCount: 5,
+          children: List.generate(10, (index) {
+            return Draggable(
+              maxSimultaneousDrags: 1,
+              data: index + 1,
+              childWhenDragging: const SizedBox(),
+              dragAnchorStrategy: pointerDragAnchorStrategy,
+              feedback: DraggingListItem(
+                dragKey: GlobalKey(),
+                photoProvider: index + 1,
               ),
-            ),
-          ),
+              child: Card(
+                margin: const EdgeInsets.all(2),
+                child: Center(
+                  child: Text(
+                    '${index + 1}',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+              ),
+            );
+          }),
         );
-      }),
+      },
     );
   }
 }

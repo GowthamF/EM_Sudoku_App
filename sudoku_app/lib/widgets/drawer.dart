@@ -13,12 +13,14 @@ class Drawer extends StatefulWidget {
 class _DrawerState extends State<Drawer> {
   String? userName;
   late ThemeBloc _themeBloc;
+  late LocationBloc _locationBloc;
 
   @override
   void initState() {
     super.initState();
     userName = context.read<UserNameCubit>().state;
     _themeBloc = BlocProvider.of<ThemeBloc>(context);
+    _locationBloc = BlocProvider.of<LocationBloc>(context);
   }
 
   @override
@@ -34,6 +36,7 @@ class _DrawerState extends State<Drawer> {
             child: Row(
               children: [
                 Expanded(
+                  flex: 2,
                   child: ListTile(
                     leading: Container(
                       decoration: BoxDecoration(
@@ -50,6 +53,23 @@ class _DrawerState extends State<Drawer> {
                       ),
                     ),
                     title: Text(userName!),
+                    subtitle: BlocBuilder<LocationBloc, LocationState>(
+                      builder: (context, state) {
+                        if (state is LocationLoaded) {
+                          return Row(
+                            children: [
+                              const Icon(Icons.place_outlined, size: 14),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(state.countryName),
+                            ],
+                          );
+                        }
+
+                        return const SizedBox();
+                      },
+                    ),
                   ),
                 ),
                 Expanded(

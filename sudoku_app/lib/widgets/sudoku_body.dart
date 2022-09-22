@@ -29,6 +29,7 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
         Future.delayed(const Duration(milliseconds: 500), () {
           sudokuBloc.add(GenerateNumbers(selectedLevel: state));
         });
+        context.read<TimerCubit>().resetTimer();
       },
       child: BlocBuilder<SudokuBloc, SudokuState>(
         builder: (context, state) {
@@ -72,10 +73,11 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                         onWillAccept: ((data) {
                           var timerState =
                               context.read<TimerStateCubit>().state;
-                          if (!timerState) {
+                          if (timerState == TimerStart.initial ||
+                              timerState == TimerStart.pause) {
                             context
                                 .read<TimerStateCubit>()
-                                .changeTimerState(true);
+                                .changeTimerState(TimerStart.start);
                           }
 
                           var isPrefilled = indexesWithZero.firstWhereOrNull(
