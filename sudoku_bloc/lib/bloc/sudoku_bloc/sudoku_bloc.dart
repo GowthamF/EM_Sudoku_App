@@ -16,14 +16,20 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
       : super(SudokuInitial()) {
     on<GenerateNumbers>(_onGenerateNumbersEvent);
     on<ResetNumbers>(_onResetNumbersEvent);
+    on<ValidateNumbers>(_onValidateNumbersEvent);
   }
 
   FutureOr<void> _onGenerateNumbersEvent(
       GenerateNumbers event, Emitter<SudokuState> emit) async {
     var sudoku =
+        await sharedPreferenceRepository.getString(key: sudokuProgressKey);
+
+    sudoku ??=
         await sharedPreferenceRepository.getString(key: unSolvedSudokuKey);
 
-    if (sudoku != null) {
+    if (sudoku != null &&
+        List.from(jsonDecode(sudoku)).isNotEmpty &&
+        event.isInitial) {
       var sudokuList = jsonDecode(sudoku);
 
       var ints = List.from(sudokuList);
@@ -40,9 +46,35 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
       var level = Levels.values
           .firstWhereOrNull((element) => element.name == selectedLevel);
 
+      var numberTracker =
+          await sharedPreferenceRepository.getString(key: trackingNumbersKey);
+
+      List<NumbersTrackModel> tracker = [];
+
+      if (numberTracker != null) {
+        tracker = List.from(jsonDecode(numberTracker))
+            .map((e) => NumbersTrackModel.fromJson(e))
+            .toList();
+      }
+
+      var trackedDuration =
+          await sharedPreferenceRepository.getString(key: trackingDurationKey);
+
+      var durationSpent = const Duration();
+
+      if (trackedDuration != null) {
+        var duration = trackedDuration.split(":");
+        durationSpent = Duration(
+            hours: int.parse(duration[0]),
+            minutes: int.parse(duration[1]),
+            seconds: int.parse(duration[2]));
+      }
+
       emit(SudokuGenerated(
         numbers: sudokuListInt,
         selectedLevel: level ?? Levels.easy,
+        numbersTracker: tracker,
+        trackedDuration: durationSpent,
       ));
     } else {
       if (event.selectedLevel == Levels.hard) {
@@ -58,8 +90,13 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
           await sharedPreferenceRepository.setString(
               key: solvedSudokuKey,
               value: jsonEncode(sudokuGenerator.newSudokuSolved));
+          await sharedPreferenceRepository.setString(
+              key: sudokuProgressKey,
+              value: jsonEncode(sudokuGenerator.newSudoku));
           emit(SudokuGenerated(
-              numbers: sudokuGenerator.newSudoku, selectedLevel: Levels.hard));
+            numbers: sudokuGenerator.newSudoku,
+            selectedLevel: Levels.hard,
+          ));
         });
       } else if (event.selectedLevel == Levels.medium) {
         await Future(() async {
@@ -74,6 +111,9 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
           await sharedPreferenceRepository.setString(
               key: solvedSudokuKey,
               value: jsonEncode(sudokuGenerator.newSudokuSolved));
+          await sharedPreferenceRepository.setString(
+              key: sudokuProgressKey,
+              value: jsonEncode(sudokuGenerator.newSudoku));
           emit(SudokuGenerated(
               numbers: sudokuGenerator.newSudoku,
               selectedLevel: Levels.medium));
@@ -91,6 +131,9 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
           await sharedPreferenceRepository.setString(
               key: solvedSudokuKey,
               value: jsonEncode(sudokuGenerator.newSudokuSolved));
+          await sharedPreferenceRepository.setString(
+              key: sudokuProgressKey,
+              value: jsonEncode(sudokuGenerator.newSudoku));
           emit(SudokuGenerated(
             numbers: sudokuGenerator.newSudoku,
             selectedLevel: Levels.easy,
@@ -103,5 +146,27 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
   FutureOr<void> _onResetNumbersEvent(
       ResetNumbers event, Emitter<SudokuState> emit) {
     emit(SudokuGenerating());
+  }
+
+  FutureOr<void> _onValidateNumbersEvent(
+      ValidateNumbers event, Emitter<SudokuState> emit) async {
+    var solvedSudoku =
+        await sharedPreferenceRepository.getString(key: solvedSudokuKey);
+
+    if (solvedSudoku != null) {
+      var sudokuList = jsonDecode(solvedSudoku);
+
+      var sudokuSolvedListInt =
+          List.from(sudokuList).map((e) => List<int>.from(e)).toList();
+
+      var isSolved = SudokuUtilities.isSolved(event.sudokuNumbers);
+
+      if (isSolved) {
+        var isEqual = const ListEquality<List<int>>()
+            .equals(event.sudokuNumbers, sudokuSolvedListInt);
+
+        print(isEqual);
+      }
+    }
   }
 }

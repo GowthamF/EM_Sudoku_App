@@ -12,6 +12,14 @@ class GameControls extends StatefulWidget {
 }
 
 class _GameControlsState extends State<GameControls> {
+  late SudokuBloc sudokuBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    sudokuBloc = BlocProvider.of<SudokuBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -30,6 +38,11 @@ class _GameControlsState extends State<GameControls> {
           },
           icon: const Icon(Icons.clear),
           tooltip: 'Erase',
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.done),
+          tooltip: 'Validate',
         ),
         BlocConsumer<TimerStateCubit, TimerStart>(
           listener: (context, state) {

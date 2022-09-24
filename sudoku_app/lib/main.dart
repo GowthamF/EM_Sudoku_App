@@ -102,6 +102,12 @@ class App extends StatelessWidget {
                     RepositoryProvider.of<FirebaseRepository>(context),
               ),
             ),
+            BlocProvider<SudokuProgressBloc>(
+              create: (context) => SudokuProgressBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
           ],
           child: const MainScreen(),
         ),

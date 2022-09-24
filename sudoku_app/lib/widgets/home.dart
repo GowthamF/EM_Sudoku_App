@@ -14,6 +14,7 @@ class _HomeState extends State<Home> {
   late UserNameGenerateBloc _userNameGenerateBloc;
   late InstructionsBloc _instructionsBloc;
   late LocationBloc _locationBloc;
+  late SudokuProgressBloc _sudokuProgressBloc;
 
   @override
   void initState() {
@@ -21,6 +22,7 @@ class _HomeState extends State<Home> {
     _userNameGenerateBloc = BlocProvider.of<UserNameGenerateBloc>(context);
     _instructionsBloc = BlocProvider.of<InstructionsBloc>(context);
     _locationBloc = BlocProvider.of<LocationBloc>(context);
+    _sudokuProgressBloc = BlocProvider.of<SudokuProgressBloc>(context);
 
     _userNameGenerateBloc.add(GenerateUserName());
     _instructionsBloc.add(GetInstructions());
@@ -61,21 +63,60 @@ class _HomeState extends State<Home> {
             return Scaffold(
               appBar: AppBar(
                 title: const Text('Sudoku'),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: BlocBuilder<LevelsChangeCubit, Levels>(
+                      builder: (context, state) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.star),
+                            state == Levels.medium || state == Levels.hard
+                                ? const Icon(Icons.star)
+                                : const Icon(Icons.star_border_outlined),
+                            state == Levels.hard
+                                ? const Icon(Icons.star)
+                                : const Icon(Icons.star_border_outlined),
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
               drawer: const Drawer(child: app.DrawerScreen()),
-              onDrawerChanged: (isOpened) {},
               body: Column(
                 children: [
                   Expanded(
                     flex: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: BlocBuilder<TimerCubit, Duration>(
-                        builder: (context, state) {
-                          return Text(
-                              state.toString().split('.')[0].padLeft(8, '0'));
-                        },
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.topCenter,
+                                padding: const EdgeInsets.all(16),
+                                child: BlocConsumer<TimerCubit, Duration>(
+                                  listener: (context, state) {
+                                    _sudokuProgressBloc
+                                        .add(SaveDuration(duration: state));
+                                  },
+                                  builder: (context, state) {
+                                    return Text(state
+                                        .toString()
+                                        .split('.')[0]
+                                        .padLeft(8, '0'));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const Expanded(

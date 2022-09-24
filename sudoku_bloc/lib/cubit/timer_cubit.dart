@@ -23,6 +23,10 @@ class TimerCubit extends Cubit<Duration> {
   void resetTimer() {
     return emit(const Duration());
   }
+
+  void changeTimerDuration(Duration duration) {
+    return emit(duration);
+  }
 }
 
 class TimerStateCubit extends Cubit<TimerStart> {

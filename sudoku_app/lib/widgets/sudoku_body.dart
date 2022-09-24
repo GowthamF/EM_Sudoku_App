@@ -12,12 +12,15 @@ class SudokuBody extends StatefulWidget {
 
 class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
   late SudokuBloc sudokuBloc;
+  late SudokuProgressBloc sudokuProgressBloc;
 
   @override
   void initState() {
     super.initState();
     sudokuBloc = BlocProvider.of<SudokuBloc>(context);
-    sudokuBloc.add(GenerateNumbers(selectedLevel: Levels.easy));
+    sudokuProgressBloc = BlocProvider.of<SudokuProgressBloc>(context);
+    sudokuBloc
+        .add(GenerateNumbers(selectedLevel: Levels.easy, isInitial: true));
   }
 
   @override
@@ -27,16 +30,23 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
       listener: (context, state) {
         sudokuBloc.add(ResetNumbers());
         Future.delayed(const Duration(milliseconds: 500), () {
-          sudokuBloc.add(GenerateNumbers(selectedLevel: state));
+          sudokuBloc
+              .add(GenerateNumbers(selectedLevel: state, isInitial: false));
         });
         context.read<TimerCubit>().resetTimer();
       },
-      child: BlocBuilder<SudokuBloc, SudokuState>(
+      child: BlocConsumer<SudokuBloc, SudokuState>(
+        listener: (context, state) {
+          if (state is SudokuGenerated) {
+            context
+                .read<TimerCubit>()
+                .changeTimerDuration(state.trackedDuration);
+          }
+        },
         builder: (context, state) {
           if (state is SudokuGenerated) {
-            context.read<LevelCubit>().changeLevel(state.selectedLevel);
             var numbers = state.numbers.toList();
-            List<NumbersTrackModel> trackingNumbers = [];
+            List<NumbersTrackModel> trackingNumbers = state.numbersTracker;
             List<NumbersTrackModel> indexesWithZero = [];
             return BlocListener<NumbersUndoCubit, bool>(
               listener: (context, state) {
@@ -108,7 +118,16 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                             child: Center(
                               child: Text(
                                 '${value == 0 ? '' : value}',
-                                style: Theme.of(context).textTheme.headline5,
+                                style: trackingNumbers.indexWhere((element) =>
+                                            element.index == index &&
+                                            element.listIndex == listIndex) >=
+                                        0
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .merge(const TextStyle(
+                                            color: Colors.green))
+                                    : Theme.of(context).textTheme.headline5,
                               ),
                             ),
                           );
@@ -121,6 +140,13 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                               index: index,
                               value: value));
                           context.read<NumbersCubit>().changeOfCell();
+
+                          sudokuProgressBloc.add(
+                            SaveProgress(
+                              sudokuNumbers: numbers,
+                              trackingNumbers: trackingNumbers,
+                            ),
+                          );
                         },
                       );
                     }),
