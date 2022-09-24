@@ -20,6 +20,12 @@ class App extends StatelessWidget {
         RepositoryProvider<SharedPreferenceRepository>(
           create: (context) => SharedPreferenceRepository(),
         ),
+        RepositoryProvider<AuthRepository>(
+          create: (context) => AuthRepository(),
+        ),
+        RepositoryProvider<FirebaseRepository>(
+          create: (context) => FirebaseRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -46,6 +52,9 @@ class App extends StatelessWidget {
           ),
           BlocProvider<LevelsChangeCubit>(
             create: (context) => LevelsChangeCubit(),
+          ),
+          BlocProvider<LevelCubit>(
+            create: (context) => LevelCubit(),
           ),
         ],
         child: MultiBlocProvider(
@@ -80,6 +89,17 @@ class App extends StatelessWidget {
               create: (context) => LocationBloc(
                 sharedPreferenceRepository:
                     RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
+            BlocProvider<AuthBloc>(
+              create: (context) => AuthBloc(
+                authRepository: RepositoryProvider.of<AuthRepository>(context),
+              ),
+            ),
+            BlocProvider<FirebaseBloc>(
+              create: (context) => FirebaseBloc(
+                firebaseRepository:
+                    RepositoryProvider.of<FirebaseRepository>(context),
               ),
             ),
           ],

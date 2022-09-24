@@ -13,14 +13,12 @@ class Drawer extends StatefulWidget {
 class _DrawerState extends State<Drawer> {
   String? userName;
   late ThemeBloc _themeBloc;
-  late LocationBloc _locationBloc;
 
   @override
   void initState() {
     super.initState();
     userName = context.read<UserNameCubit>().state;
     _themeBloc = BlocProvider.of<ThemeBloc>(context);
-    _locationBloc = BlocProvider.of<LocationBloc>(context);
   }
 
   @override
@@ -116,7 +114,7 @@ class _DrawerState extends State<Drawer> {
                       children: List.generate(
                         Levels.values.length,
                         (index) => ListTile(
-                          selected: context.read<LevelsChangeCubit>().state ==
+                          selected: context.read<LevelCubit>().state ==
                               Levels.values[index],
                           title: Text(
                             Levels.values[index].name.getName(),
@@ -126,6 +124,9 @@ class _DrawerState extends State<Drawer> {
                             context
                                 .read<LevelsChangeCubit>()
                                 .changeLevels(Levels.values[index]);
+                            context
+                                .read<LevelCubit>()
+                                .changeLevel(Levels.values[index]);
                           },
                         ),
                       ),

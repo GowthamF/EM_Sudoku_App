@@ -1,4 +1,4 @@
-import 'package:sudoku_bloc/services/shared_preference_service.dart';
+import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class SharedPreferenceRepository {
   final SharedPreferenceService _sharedPreferenceService =

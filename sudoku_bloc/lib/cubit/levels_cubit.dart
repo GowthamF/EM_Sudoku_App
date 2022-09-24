@@ -16,3 +16,11 @@ class LevelsChangeCubit extends Cubit<Levels> {
     return emit(level);
   }
 }
+
+class LevelCubit extends Cubit<Levels> {
+  LevelCubit() : super(Levels.easy);
+
+  void changeLevel(Levels level) {
+    return emit(level);
+  }
+}

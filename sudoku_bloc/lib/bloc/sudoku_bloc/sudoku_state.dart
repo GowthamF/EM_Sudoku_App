@@ -8,6 +8,7 @@ class SudokuGenerating extends SudokuState {}
 
 class SudokuGenerated extends SudokuState {
   final List<List<int>> numbers;
+  final Levels selectedLevel;
 
-  SudokuGenerated({required this.numbers});
+  SudokuGenerated({required this.numbers, required this.selectedLevel});
 }

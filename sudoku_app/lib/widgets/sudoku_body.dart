@@ -34,6 +34,7 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
       child: BlocBuilder<SudokuBloc, SudokuState>(
         builder: (context, state) {
           if (state is SudokuGenerated) {
+            context.read<LevelCubit>().changeLevel(state.selectedLevel);
             var numbers = state.numbers.toList();
             List<NumbersTrackModel> trackingNumbers = [];
             List<NumbersTrackModel> indexesWithZero = [];
