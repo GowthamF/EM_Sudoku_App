@@ -15,3 +15,11 @@ class NumbersUndoCubit extends Cubit<bool> {
     return emit(!state);
   }
 }
+
+class SudokuNumbersCubit extends Cubit<List<List<int>>> {
+  SudokuNumbersCubit() : super(const []);
+
+  void updateChanges(List<List<int>> numbers) {
+    return emit(numbers);
+  }
+}

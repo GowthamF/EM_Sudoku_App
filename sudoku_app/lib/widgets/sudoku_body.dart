@@ -41,12 +41,16 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
             context
                 .read<TimerCubit>()
                 .changeTimerDuration(state.trackedDuration);
+            context
+                .read<SudokuNumbersCubit>()
+                .updateChanges(state.numbers.toList());
           }
         },
         builder: (context, state) {
           if (state is SudokuGenerated) {
             var numbers = state.numbers.toList();
-            List<NumbersTrackModel> trackingNumbers = state.numbersTracker;
+            List<NumbersTrackModel> trackingNumbers =
+                state.numbersTracker.toList();
             List<NumbersTrackModel> indexesWithZero = [];
             return BlocListener<NumbersUndoCubit, bool>(
               listener: (context, state) {
@@ -58,6 +62,15 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                   trackingNumbers.removeLast();
 
                   context.read<NumbersCubit>().changeOfCell();
+                  context
+                      .read<SudokuNumbersCubit>()
+                      .updateChanges(numbers.toList());
+                  sudokuProgressBloc.add(
+                    SaveProgress(
+                      sudokuNumbers: numbers,
+                      trackingNumbers: trackingNumbers,
+                    ),
+                  );
                 }
               },
               child: BlocBuilder<NumbersCubit, bool>(
@@ -78,6 +91,8 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                       if (value == 0) {
                         indexesWithZero.add(NumbersTrackModel(
                             listIndex: listIndex, index: index, value: value));
+                      } else {
+                        indexesWithZero.addAll(trackingNumbers);
                       }
 
                       return DragTarget<int>(
@@ -140,6 +155,9 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
                               index: index,
                               value: value));
                           context.read<NumbersCubit>().changeOfCell();
+                          context
+                              .read<SudokuNumbersCubit>()
+                              .updateChanges(numbers.toList());
 
                           sudokuProgressBloc.add(
                             SaveProgress(

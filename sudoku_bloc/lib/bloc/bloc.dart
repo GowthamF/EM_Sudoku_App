@@ -6,3 +6,4 @@ export 'location_bloc/location_bloc.dart';
 export 'auth_bloc/auth_bloc.dart';
 export 'firebase_bloc/firebase_bloc.dart';
 export 'sudoku_progress_bloc/sudoku_progress_bloc.dart';
+export 'sudoku_validation/sudoku_validation_bloc.dart';

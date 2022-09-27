@@ -16,7 +16,7 @@ class _GamePadState extends State<GamePad> {
       builder: (context, state) {
         return GridView.count(
           crossAxisCount: 5,
-          children: List.generate(10, (index) {
+          children: List.generate(9, (index) {
             return Draggable(
               maxSimultaneousDrags: 1,
               data: index + 1,

@@ -16,7 +16,6 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
       : super(SudokuInitial()) {
     on<GenerateNumbers>(_onGenerateNumbersEvent);
     on<ResetNumbers>(_onResetNumbersEvent);
-    on<ValidateNumbers>(_onValidateNumbersEvent);
   }
 
   FutureOr<void> _onGenerateNumbersEvent(
@@ -120,7 +119,7 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
         });
       } else {
         await Future(() async {
-          var sudokuGenerator = SudokuGenerator(emptySquares: 27);
+          var sudokuGenerator = SudokuGenerator(emptySquares: 1);
           await sharedPreferenceRepository.setString(
             key: selectedLevelKey,
             value: Levels.easy.name,
@@ -146,27 +145,5 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
   FutureOr<void> _onResetNumbersEvent(
       ResetNumbers event, Emitter<SudokuState> emit) {
     emit(SudokuGenerating());
-  }
-
-  FutureOr<void> _onValidateNumbersEvent(
-      ValidateNumbers event, Emitter<SudokuState> emit) async {
-    var solvedSudoku =
-        await sharedPreferenceRepository.getString(key: solvedSudokuKey);
-
-    if (solvedSudoku != null) {
-      var sudokuList = jsonDecode(solvedSudoku);
-
-      var sudokuSolvedListInt =
-          List.from(sudokuList).map((e) => List<int>.from(e)).toList();
-
-      var isSolved = SudokuUtilities.isSolved(event.sudokuNumbers);
-
-      if (isSolved) {
-        var isEqual = const ListEquality<List<int>>()
-            .equals(event.sudokuNumbers, sudokuSolvedListInt);
-
-        print(isEqual);
-      }
-    }
   }
 }

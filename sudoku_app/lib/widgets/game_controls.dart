@@ -13,11 +13,13 @@ class GameControls extends StatefulWidget {
 
 class _GameControlsState extends State<GameControls> {
   late SudokuBloc sudokuBloc;
+  late SudokuValidationBloc sudokuValidationBloc;
 
   @override
   void initState() {
     super.initState();
     sudokuBloc = BlocProvider.of<SudokuBloc>(context);
+    sudokuValidationBloc = BlocProvider.of<SudokuValidationBloc>(context);
   }
 
   @override
@@ -40,7 +42,13 @@ class _GameControlsState extends State<GameControls> {
           tooltip: 'Erase',
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            var currentSudokuNumbers = context.read<SudokuNumbersCubit>().state;
+
+            sudokuValidationBloc.add(
+              SudokuValidateNumbers(sudokuNumbers: currentSudokuNumbers),
+            );
+          },
           icon: const Icon(Icons.done),
           tooltip: 'Validate',
         ),

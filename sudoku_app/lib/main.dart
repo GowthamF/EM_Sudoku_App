@@ -56,6 +56,9 @@ class App extends StatelessWidget {
           BlocProvider<LevelCubit>(
             create: (context) => LevelCubit(),
           ),
+          BlocProvider<SudokuNumbersCubit>(
+            create: (context) => SudokuNumbersCubit(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -104,6 +107,12 @@ class App extends StatelessWidget {
             ),
             BlocProvider<SudokuProgressBloc>(
               create: (context) => SudokuProgressBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
+            BlocProvider<SudokuValidationBloc>(
+              create: (context) => SudokuValidationBloc(
                 sharedPreferenceRepository:
                     RepositoryProvider.of<SharedPreferenceRepository>(context),
               ),
