@@ -44,9 +44,10 @@ class _GameControlsState extends State<GameControls> {
         IconButton(
           onPressed: () {
             var currentSudokuNumbers = context.read<SudokuNumbersCubit>().state;
-
+            var duration = context.read<TimerCubit>().state;
             sudokuValidationBloc.add(
-              SudokuValidateNumbers(sudokuNumbers: currentSudokuNumbers),
+              SudokuValidateNumbers(
+                  sudokuNumbers: currentSudokuNumbers, duration: duration),
             );
           },
           icon: const Icon(Icons.done),

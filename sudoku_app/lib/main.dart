@@ -26,6 +26,9 @@ class App extends StatelessWidget {
         RepositoryProvider<FirebaseRepository>(
           create: (context) => FirebaseRepository(),
         ),
+        RepositoryProvider<SudokuRepository>(
+          create: (context) => SudokuRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -115,6 +118,8 @@ class App extends StatelessWidget {
               create: (context) => SudokuValidationBloc(
                 sharedPreferenceRepository:
                     RepositoryProvider.of<SharedPreferenceRepository>(context),
+                sudokuRepository:
+                    RepositoryProvider.of<SudokuRepository>(context),
               ),
             ),
           ],

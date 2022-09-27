@@ -10,8 +10,11 @@ part 'sudoku_validation_state.dart';
 class SudokuValidationBloc
     extends Bloc<SudokuValidationEvent, SudokuValidationState> {
   final SharedPreferenceRepository sharedPreferenceRepository;
+  final SudokuRepository sudokuRepository;
 
-  SudokuValidationBloc({required this.sharedPreferenceRepository})
+  SudokuValidationBloc(
+      {required this.sharedPreferenceRepository,
+      required this.sudokuRepository})
       : super(SudokuValidationInitial()) {
     on<SudokuValidateNumbers>(_onSudokuValidateNumbersEvent);
   }
@@ -57,6 +60,12 @@ class SudokuValidationBloc
                 key: solvedSudokuKey, value: '[]');
             await sharedPreferenceRepository.setString(
                 key: sudokuProgressKey, value: '[]');
+            await sharedPreferenceRepository.setString(
+                key: trackingNumbersKey, value: '[]');
+            var country =
+                await sharedPreferenceRepository.getString(key: locationKey);
+            await sudokuRepository.addProgress(
+                {"duration": event.duration.toString(), "country": country});
             emit(SudokuValidationEqual());
           }
         }

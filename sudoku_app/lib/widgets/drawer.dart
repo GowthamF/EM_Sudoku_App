@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudoku_app/sudoku_app.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -148,7 +149,11 @@ class _DrawerState extends State<Drawer> {
         ),
         ListTile(
           title: const Text('Leaderboard'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => LeaderBoardScreen())));
+          },
         ),
         ListTile(
           title: const Text('Profile'),
