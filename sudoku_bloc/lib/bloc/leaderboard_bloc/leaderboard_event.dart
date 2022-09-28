@@ -7,3 +7,9 @@ class LoadLeaderboardData extends LeaderboardEvent {
 
   LoadLeaderboardData({required this.levels});
 }
+
+class GetUserData extends LeaderboardEvent {
+  final String userId;
+  final Levels levels;
+  GetUserData({required this.userId, required this.levels});
+}

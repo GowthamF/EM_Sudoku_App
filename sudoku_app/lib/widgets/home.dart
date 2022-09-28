@@ -88,20 +88,37 @@ class _HomeState extends State<Home> {
                   }
 
                   if (state is SudokuValidationEqual) {
-                    var snackBar = const SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text('Congratulations'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    _sudokuBloc.add(ResetNumbers());
-                    var selectedLevel = context.read<LevelCubit>().state;
-                    _sudokuBloc.add(GenerateNumbers(
-                        selectedLevel: selectedLevel, isInitial: true));
-                    context.read<TimerCubit>().stopTimer();
-                    context.read<TimerCubit>().resetTimer();
-                    context
-                        .read<TimerStateCubit>()
-                        .changeTimerState(TimerStart.initial);
+                    var duration = context.read<TimerCubit>().state;
+                    showDialog<bool>(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Congratulations'),
+                            content: Text(
+                                'You have completed the game in ${duration.toString().split('.')[0].padLeft(8, '0')}'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(true);
+                                },
+                              ),
+                            ],
+                          );
+                        }).then((value) {
+                      if (value != null && value) {
+                        _sudokuBloc.add(ResetNumbers());
+                        var selectedLevel = context.read<LevelCubit>().state;
+                        _sudokuBloc.add(GenerateNumbers(
+                            selectedLevel: selectedLevel, isInitial: true));
+                        context.read<TimerCubit>().stopTimer();
+                        context.read<TimerCubit>().resetTimer();
+                        context
+                            .read<TimerStateCubit>()
+                            .changeTimerState(TimerStart.initial);
+                      }
+                    });
                   }
                 },
                 child: Scaffold(

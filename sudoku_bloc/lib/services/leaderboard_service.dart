@@ -20,6 +20,24 @@ class LeaderboardService {
     }
   }
 
+  Future<List<LeaderBoardModel>> getUserData(
+      Levels level, String userId) async {
+    try {
+      var documents = await firebaseFirestore
+          .collection(Collections.leaderBoard.name)
+          .where('userId', isEqualTo: userId)
+          .where('level', isEqualTo: level.name)
+          .orderBy('duration')
+          .get();
+      var data = documents.docs
+          .map((e) => LeaderBoardModel.fromJson(e.data()))
+          .toList();
+      return data;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<void> addNumbers(String numbers) async {
     try {
       var document = await firebaseFirestore

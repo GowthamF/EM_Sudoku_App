@@ -20,6 +20,7 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
 
   FutureOr<void> _onGenerateNumbersEvent(
       GenerateNumbers event, Emitter<SudokuState> emit) async {
+    emit(SudokuGenerating());
     var sudoku =
         await sharedPreferenceRepository.getString(key: sudokuProgressKey);
 
@@ -143,7 +144,64 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
   }
 
   FutureOr<void> _onResetNumbersEvent(
-      ResetNumbers event, Emitter<SudokuState> emit) {
-    emit(SudokuGenerating());
+      ResetNumbers event, Emitter<SudokuState> emit) async {
+    await sharedPreferenceRepository.setString(
+        key: sudokuProgressKey, value: "[]");
+    await sharedPreferenceRepository.setString(
+        key: trackingNumbersKey, value: "[]");
+    await sharedPreferenceRepository.setString(
+        key: trackingDurationKey,
+        value: const Duration().toString().split('.')[0].padLeft(8, '0'));
+
+    var sudoku =
+        await sharedPreferenceRepository.getString(key: unSolvedSudokuKey);
+    if (sudoku != null && List.from(jsonDecode(sudoku)).isNotEmpty) {
+      var sudokuList = jsonDecode(sudoku);
+
+      var ints = List.from(sudokuList);
+
+      var sudokuListInt = ints.map(
+        (e) {
+          return List<int>.from(e);
+        },
+      ).toList();
+
+      var selectedLevel =
+          await sharedPreferenceRepository.getString(key: selectedLevelKey);
+
+      var level = Levels.values
+          .firstWhereOrNull((element) => element.name == selectedLevel);
+
+      var numberTracker =
+          await sharedPreferenceRepository.getString(key: trackingNumbersKey);
+
+      List<NumbersTrackModel> tracker = [];
+
+      if (numberTracker != null) {
+        tracker = List.from(jsonDecode(numberTracker))
+            .map((e) => NumbersTrackModel.fromJson(e))
+            .toList();
+      }
+
+      var trackedDuration =
+          await sharedPreferenceRepository.getString(key: trackingDurationKey);
+
+      var durationSpent = const Duration();
+
+      if (trackedDuration != null) {
+        var duration = trackedDuration.split(":");
+        durationSpent = Duration(
+            hours: int.parse(duration[0]),
+            minutes: int.parse(duration[1]),
+            seconds: int.parse(duration[2]));
+      }
+
+      emit(SudokuGenerated(
+        numbers: sudokuListInt,
+        selectedLevel: level ?? Levels.easy,
+        numbersTracker: tracker,
+        trackedDuration: durationSpent,
+      ));
+    }
   }
 }

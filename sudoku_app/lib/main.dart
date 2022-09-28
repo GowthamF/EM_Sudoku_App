@@ -71,6 +71,9 @@ class App extends StatelessWidget {
           BlocProvider<CountryNameCubit>(
             create: (context) => CountryNameCubit(),
           ),
+          BlocProvider<SudokuNumbersInitialCubit>(
+            create: (context) => SudokuNumbersInitialCubit(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [

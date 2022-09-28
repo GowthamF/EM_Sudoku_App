@@ -11,6 +11,7 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
   LeaderboardBloc({required this.leaderboardRepository})
       : super(LeaderboardInitial()) {
     on<LoadLeaderboardData>(_onLoadLeaderboardDataEvent);
+    on<GetUserData>(_onGetUserDataEvent);
   }
 
   FutureOr<void> _onLoadLeaderboardDataEvent(
@@ -20,5 +21,14 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
         await leaderboardRepository.getLeaderboardData(event.levels);
 
     emit(LeaderboardLoaded(leaderboardList: leaderboardList));
+  }
+
+  FutureOr<void> _onGetUserDataEvent(
+      GetUserData event, Emitter<LeaderboardState> emit) async {
+    emit(UserdataLoading());
+    var leaderboardList =
+        await leaderboardRepository.getUserData(event.levels, event.userId);
+
+    emit(UserdataLoaded(userDataList: leaderboardList));
   }
 }

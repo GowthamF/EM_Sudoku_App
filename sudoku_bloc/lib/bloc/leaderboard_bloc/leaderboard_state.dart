@@ -11,3 +11,11 @@ class LeaderboardLoaded extends LeaderboardState {
 
   LeaderboardLoaded({required this.leaderboardList});
 }
+
+class UserdataLoading extends LeaderboardState {}
+
+class UserdataLoaded extends LeaderboardState {
+  final List<LeaderBoardModel> userDataList;
+
+  UserdataLoaded({required this.userDataList});
+}

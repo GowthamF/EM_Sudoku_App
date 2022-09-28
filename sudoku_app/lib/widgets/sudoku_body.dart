@@ -28,7 +28,6 @@ class _SudokuBodyState extends State<SudokuBody> with TickerProviderStateMixin {
     final ThemeData appTheme = Theme.of(context);
     return BlocListener<LevelsChangeCubit, Levels>(
       listener: (context, state) {
-        sudokuBloc.add(ResetNumbers());
         Future.delayed(const Duration(milliseconds: 500), () {
           sudokuBloc
               .add(GenerateNumbers(selectedLevel: state, isInitial: false));

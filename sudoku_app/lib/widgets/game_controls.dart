@@ -36,10 +36,10 @@ class _GameControlsState extends State<GameControls> {
         ),
         IconButton(
           onPressed: () {
-            context.read<TimerCubit>().stopTimer();
+            sudokuBloc.add(ResetNumbers());
           },
-          icon: const Icon(Icons.clear),
-          tooltip: 'Erase',
+          icon: const Icon(Icons.restart_alt),
+          tooltip: 'Reset',
         ),
         IconButton(
           onPressed: () {

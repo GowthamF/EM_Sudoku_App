@@ -23,3 +23,11 @@ class SudokuNumbersCubit extends Cubit<List<List<int>>> {
     return emit(numbers);
   }
 }
+
+class SudokuNumbersInitialCubit extends Cubit<List<List<int>>> {
+  SudokuNumbersInitialCubit() : super(const []);
+
+  void updateSudoku(List<List<int>> numbers) {
+    emit(numbers);
+  }
+}

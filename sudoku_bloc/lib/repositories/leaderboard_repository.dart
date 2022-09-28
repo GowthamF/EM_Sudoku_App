@@ -7,4 +7,8 @@ class LeaderboardRepository {
   Future<List<LeaderBoardModel>> getLeaderboardData(Levels level) {
     return leaderboardService.getLeaderboardData(level);
   }
+
+  Future<List<LeaderBoardModel>> getUserData(Levels level, String userId) {
+    return leaderboardService.getUserData(level, userId);
+  }
 }
