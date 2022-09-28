@@ -29,6 +29,9 @@ class App extends StatelessWidget {
         RepositoryProvider<SudokuRepository>(
           create: (context) => SudokuRepository(),
         ),
+        RepositoryProvider<LeaderboardRepository>(
+          create: (context) => LeaderboardRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -61,6 +64,12 @@ class App extends StatelessWidget {
           ),
           BlocProvider<SudokuNumbersCubit>(
             create: (context) => SudokuNumbersCubit(),
+          ),
+          BlocProvider<UserIdCubit>(
+            create: (context) => UserIdCubit(),
+          ),
+          BlocProvider<CountryNameCubit>(
+            create: (context) => CountryNameCubit(),
           ),
         ],
         child: MultiBlocProvider(
@@ -120,6 +129,12 @@ class App extends StatelessWidget {
                     RepositoryProvider.of<SharedPreferenceRepository>(context),
                 sudokuRepository:
                     RepositoryProvider.of<SudokuRepository>(context),
+              ),
+            ),
+            BlocProvider<LeaderboardBloc>(
+              create: (context) => LeaderboardBloc(
+                leaderboardRepository:
+                    RepositoryProvider.of<LeaderboardRepository>(context),
               ),
             ),
           ],

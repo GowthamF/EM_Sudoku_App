@@ -36,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         return BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthLoaded) {
+              context.read<UserIdCubit>().changeUserId(state.userId);
               _themeBloc.add(GetThemeData());
             }
           },

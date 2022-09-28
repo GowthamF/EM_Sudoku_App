@@ -11,4 +11,8 @@ class AuthService {
 
     return '';
   }
+
+  String userId() {
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
 }

@@ -10,3 +10,4 @@ export 'game_pad.dart';
 export 'game_pad_screen.dart';
 export 'leader_board.dart';
 export 'leader_board_screen.dart';
+export 'levels_select.dart';

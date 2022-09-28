@@ -3,3 +3,4 @@ export 'shared_preference_repository.dart';
 export 'auth_repository.dart';
 export 'firebase_repository.dart';
 export 'sudoku_repository.dart';
+export 'leaderboard_repository.dart';

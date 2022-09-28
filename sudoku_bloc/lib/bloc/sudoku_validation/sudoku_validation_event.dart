@@ -4,7 +4,8 @@ abstract class SudokuValidationEvent {}
 
 class SudokuValidateNumbers extends SudokuValidationEvent {
   final List<List<int>> sudokuNumbers;
-  final Duration duration;
+  final LeaderBoardModel leaderBoardModel;
 
-  SudokuValidateNumbers({required this.sudokuNumbers, required this.duration});
+  SudokuValidateNumbers(
+      {required this.sudokuNumbers, required this.leaderBoardModel});
 }

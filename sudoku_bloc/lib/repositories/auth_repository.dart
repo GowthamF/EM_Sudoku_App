@@ -6,4 +6,8 @@ class AuthRepository {
   Future<String> signInAnonymously() {
     return authService.signInAnonymously();
   }
+
+  String userId() {
+    return authService.userId();
+  }
 }

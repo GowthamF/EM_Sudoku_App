@@ -45,9 +45,23 @@ class _GameControlsState extends State<GameControls> {
           onPressed: () {
             var currentSudokuNumbers = context.read<SudokuNumbersCubit>().state;
             var duration = context.read<TimerCubit>().state;
+            var countryName = context.read<CountryNameCubit>().state;
+            var userName = context.read<UserNameCubit>().state;
+            var userId = context.read<UserIdCubit>().state;
+            var selectedLevel = context.read<LevelCubit>().state;
             sudokuValidationBloc.add(
               SudokuValidateNumbers(
-                  sudokuNumbers: currentSudokuNumbers, duration: duration),
+                sudokuNumbers: currentSudokuNumbers,
+                leaderBoardModel: LeaderBoardModel(
+                  country: countryName ?? '',
+                  duration: duration.toString(),
+                  userId: userId ?? '',
+                  userName: userName ?? '',
+                  levels: selectedLevel,
+                  playedDateTime:
+                      '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+                ),
+              ),
             );
           },
           icon: const Icon(Icons.done),

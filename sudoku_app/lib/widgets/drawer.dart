@@ -14,6 +14,11 @@ class Drawer extends StatefulWidget {
 class _DrawerState extends State<Drawer> {
   String? userName;
   late ThemeBloc _themeBloc;
+  final List<Widget> icons = [
+    Icon(Icons.looks_one_outlined),
+    Icon(Icons.looks_two_outlined),
+    Icon(Icons.looks_3_outlined)
+  ];
 
   @override
   void initState() {
@@ -115,6 +120,7 @@ class _DrawerState extends State<Drawer> {
                       children: List.generate(
                         Levels.values.length,
                         (index) => ListTile(
+                          leading: icons[index],
                           selected: context.read<LevelCubit>().state ==
                               Levels.values[index],
                           title: Text(

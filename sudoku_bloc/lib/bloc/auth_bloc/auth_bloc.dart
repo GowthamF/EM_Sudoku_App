@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onLoginAnonymousEvent(
       LoginAnonymous event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    await authRepository.signInAnonymously();
-    emit(AuthLoaded());
+    var userId = await authRepository.signInAnonymously();
+    emit(AuthLoaded(userId: userId));
   }
 }

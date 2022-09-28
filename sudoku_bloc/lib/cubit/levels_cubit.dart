@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class LevelsCubit extends Cubit<bool> {
-  LevelsCubit() : super(false);
+  LevelsCubit() : super(true);
 
   void hasExpanded() {
     return emit(!state);

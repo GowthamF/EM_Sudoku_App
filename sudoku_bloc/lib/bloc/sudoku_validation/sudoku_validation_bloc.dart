@@ -62,10 +62,8 @@ class SudokuValidationBloc
                 key: sudokuProgressKey, value: '[]');
             await sharedPreferenceRepository.setString(
                 key: trackingNumbersKey, value: '[]');
-            var country =
-                await sharedPreferenceRepository.getString(key: locationKey);
-            await sudokuRepository.addProgress(
-                {"duration": event.duration.toString(), "country": country});
+
+            await sudokuRepository.addProgress(event.leaderBoardModel.toJson());
             emit(SudokuValidationEqual());
           }
         }
