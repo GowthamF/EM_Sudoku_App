@@ -16,7 +16,8 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
   FutureOr<void> _onLoadLeaderboardDataEvent(
       LoadLeaderboardData event, Emitter<LeaderboardState> emit) async {
     emit(LeaderboardLoading());
-    var leaderboardList = await leaderboardRepository.getLeaderboardData();
+    var leaderboardList =
+        await leaderboardRepository.getLeaderboardData(event.levels);
 
     emit(LeaderboardLoaded(leaderboardList: leaderboardList));
   }

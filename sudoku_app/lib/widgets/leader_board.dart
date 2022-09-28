@@ -17,21 +17,23 @@ class _LeaderBoardState extends State<LeaderBoard> {
   void initState() {
     super.initState();
     _leaderboardBloc = BlocProvider.of<LeaderboardBloc>(context);
-    _leaderboardBloc.add(LoadLeaderboardData());
+    _leaderboardBloc.add(LoadLeaderboardData(levels: Levels.easy));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<LevelsChangeCubit, Levels>(
       listener: (context, state) {
-        _leaderboardBloc.add(LoadLeaderboardData());
+        _leaderboardBloc.add(LoadLeaderboardData(levels: state));
       },
       child: BlocBuilder<LeaderboardBloc, LeaderboardState>(
         builder: (context, state) {
           if (state is LeaderboardLoaded) {
             return RefreshIndicator(
               onRefresh: () {
-                _leaderboardBloc.add(LoadLeaderboardData());
+                var selectedLevel = context.read<LevelCubit>().state;
+                _leaderboardBloc
+                    .add(LoadLeaderboardData(levels: selectedLevel));
                 return Future.value();
               },
               child: ListView.separated(

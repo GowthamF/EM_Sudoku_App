@@ -4,7 +4,7 @@ import 'package:sudoku_bloc/sudoku_bloc.dart';
 class LeaderboardRepository {
   final LeaderboardService leaderboardService = LeaderboardService();
 
-  Future<List<LeaderBoardModel>> getLeaderboardData() {
-    return leaderboardService.getLeaderboardData();
+  Future<List<LeaderBoardModel>> getLeaderboardData(Levels level) {
+    return leaderboardService.getLeaderboardData(level);
   }
 }
