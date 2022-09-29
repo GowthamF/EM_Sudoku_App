@@ -77,7 +77,10 @@ class _GameControlsState extends State<GameControls> {
           },
           builder: (context, state) {
             return IconButton(
-              tooltip: state == TimerStart.pause ? 'Pause' : 'Play',
+              tooltip:
+                  (state == TimerStart.pause || state == TimerStart.initial)
+                      ? 'Play'
+                      : 'Pause',
               onPressed: () {
                 var timerState = context.read<TimerStateCubit>().state;
                 if (timerState == TimerStart.start) {
@@ -91,8 +94,8 @@ class _GameControlsState extends State<GameControls> {
                 }
               },
               icon: state == TimerStart.pause
-                  ? const Icon(Icons.pause)
-                  : const Icon(Icons.play_arrow),
+                  ? const Icon(Icons.play_arrow)
+                  : const Icon(Icons.pause),
             );
           },
         ),
