@@ -210,11 +210,8 @@ class _HomeState extends State<Home> {
               );
             }
 
-            return Container(
-              color: Colors.white,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           },
         ),

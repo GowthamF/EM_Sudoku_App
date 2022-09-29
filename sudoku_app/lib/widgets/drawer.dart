@@ -157,7 +157,7 @@ class _DrawerState extends State<Drawer> {
           },
         ),
         ListTile(
-          title: const Text('Profile'),
+          title: const Text('My Profile'),
           onTap: () {
             Navigator.pop(context);
             Navigator.push(

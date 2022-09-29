@@ -140,6 +140,12 @@ class App extends StatelessWidget {
                     RepositoryProvider.of<LeaderboardRepository>(context),
               ),
             ),
+            BlocProvider<ConnectivityBloc>(
+              create: (context) => ConnectivityBloc(
+                sharedPreferenceRepository:
+                    RepositoryProvider.of<SharedPreferenceRepository>(context),
+              ),
+            ),
           ],
           child: const MainScreen(),
         ),

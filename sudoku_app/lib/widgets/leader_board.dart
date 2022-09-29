@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudoku_app/sudoku_app.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class LeaderBoard extends StatefulWidget {
@@ -40,17 +41,16 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 separatorBuilder: (context, index) => const Divider(),
                 itemBuilder: ((context, index) {
                   var data = state.leaderboardList[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.white70,
-                      backgroundImage: CachedNetworkImageProvider(
-                        'https://robohash.org/${data.userName}',
-                      ),
-                    ),
-                    title: Text(data.userName),
-                    trailing: Text(
-                        data.duration.toString().split('.')[0].padLeft(8, '0')),
-                    subtitle: Text('${data.country} | ${data.playedDateTime}'),
+                  return UserProfile(
+                    leaderBoardModel: data,
+                    openProfile: ((userId) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => ProfileScreen(
+                                    userId: userId,
+                                  ))));
+                    }),
                   );
                 }),
                 itemCount: state.leaderboardList.length,

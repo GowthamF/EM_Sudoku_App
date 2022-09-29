@@ -4,7 +4,8 @@ import 'package:sudoku_app/sudoku_app.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final String? userId;
+  const ProfileScreen({Key? key, this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,31 +25,35 @@ class ProfileScreen extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: const Text('Profile'), actions: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: BlocBuilder<LevelsChangeCubit, Levels>(
-                    builder: (context, state) {
-                      return LevelsSelect(
-                        selectedLevel: state,
-                        selectLevel: (level) {
-                          context.read<LevelsChangeCubit>().changeLevels(level);
-                          context.read<LevelCubit>().changeLevel(level);
+        appBar: AppBar(
+            title: Text(userId == null ? 'My Profile' : "Profile"),
+            actions: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: BlocBuilder<LevelsChangeCubit, Levels>(
+                        builder: (context, state) {
+                          return LevelsSelect(
+                            selectedLevel: state,
+                            selectLevel: (level) {
+                              context
+                                  .read<LevelsChangeCubit>()
+                                  .changeLevels(level);
+                              context.read<LevelCubit>().changeLevel(level);
+                            },
+                          );
                         },
-                      );
-                    },
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ]),
-        body: const LeaderBoard(),
+            ]),
+        body: Profile(userId: userId),
       ),
     );
   }

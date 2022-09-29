@@ -37,12 +37,4 @@ class LeaderboardService {
       return [];
     }
   }
-
-  Future<void> addNumbers(String numbers) async {
-    try {
-      var document = await firebaseFirestore
-          .collection(Collections.sudokuNumbers.name)
-          .add({"numbers": numbers});
-    } catch (e) {}
-  }
 }

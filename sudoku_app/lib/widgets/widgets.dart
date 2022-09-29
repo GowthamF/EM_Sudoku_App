@@ -11,3 +11,6 @@ export 'game_pad_screen.dart';
 export 'leader_board.dart';
 export 'leader_board_screen.dart';
 export 'levels_select.dart';
+export 'user_profile.dart';
+export 'profile.dart';
+export 'profile_screen.dart';

@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudoku_app/sudoku_app.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final String? userId;
+  const Profile({Key? key, this.userId}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -18,7 +19,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _leaderboardBloc = BlocProvider.of<LeaderboardBloc>(context);
-    userId = context.read<UserIdCubit>().state;
+    userId = widget.userId ?? context.read<UserIdCubit>().state;
     _leaderboardBloc.add(GetUserData(levels: Levels.easy, userId: userId!));
   }
 
@@ -30,7 +31,7 @@ class _ProfileState extends State<Profile> {
       },
       child: BlocBuilder<LeaderboardBloc, LeaderboardState>(
         builder: (context, state) {
-          if (state is LeaderboardLoaded) {
+          if (state is UserdataLoaded) {
             return RefreshIndicator(
               onRefresh: () {
                 var selectedLevel = context.read<LevelCubit>().state;
@@ -41,21 +42,10 @@ class _ProfileState extends State<Profile> {
               child: ListView.separated(
                 separatorBuilder: (context, index) => const Divider(),
                 itemBuilder: ((context, index) {
-                  var data = state.leaderboardList[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.white70,
-                      backgroundImage: CachedNetworkImageProvider(
-                        'https://robohash.org/${data.userName}',
-                      ),
-                    ),
-                    title: Text(data.userName),
-                    trailing: Text(
-                        data.duration.toString().split('.')[0].padLeft(8, '0')),
-                    subtitle: Text('${data.country} | ${data.playedDateTime}'),
-                  );
+                  var data = state.userDataList[index];
+                  return UserProfile(leaderBoardModel: data);
                 }),
-                itemCount: state.leaderboardList.length,
+                itemCount: state.userDataList.length,
               ),
             );
           }
