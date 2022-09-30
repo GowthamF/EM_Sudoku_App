@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sudoku_app/sudoku_app.dart';
-import 'package:sudoku_app/widgets/profile_screen.dart';
 import 'package:sudoku_bloc/sudoku_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -16,9 +15,9 @@ class _DrawerState extends State<Drawer> {
   String? userName;
   late ThemeBloc _themeBloc;
   final List<Widget> icons = [
-    Icon(Icons.looks_one_outlined),
-    Icon(Icons.looks_two_outlined),
-    Icon(Icons.looks_3_outlined)
+    const Icon(Icons.looks_one_outlined),
+    const Icon(Icons.looks_two_outlined),
+    const Icon(Icons.looks_3_outlined)
   ];
 
   @override

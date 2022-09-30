@@ -120,7 +120,7 @@ class SudokuBloc extends Bloc<SudokuEvent, SudokuState> {
         });
       } else {
         await Future(() async {
-          var sudokuGenerator = SudokuGenerator(emptySquares: 1);
+          var sudokuGenerator = SudokuGenerator(emptySquares: 2);
           await sharedPreferenceRepository.setString(
             key: selectedLevelKey,
             value: Levels.easy.name,

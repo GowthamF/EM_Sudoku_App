@@ -6,17 +6,21 @@ class SudokuService {
 
   Future<void> addProgress(Map<String, dynamic> progress) async {
     try {
-      var document = await firebaseFirestore
+      await firebaseFirestore
           .collection(Collections.leaderBoard.name)
           .add(progress);
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   Future<void> addNumbers(String numbers) async {
     try {
-      var document = await firebaseFirestore
+      await firebaseFirestore
           .collection(Collections.sudokuNumbers.name)
           .add({"numbers": numbers});
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 }
